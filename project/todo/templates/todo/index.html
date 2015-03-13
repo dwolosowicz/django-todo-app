@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load task_priority %}
+
+{% block content %}
+    <div class="task-count">
+        {% if task_count > 0 %}
+        <h1>
+            <strong>{{ task_count }}</strong> todo{{ task_count|pluralize }} <strong>remain unfinished</strong>
+        </h1>
+        {% else %}
+        <h1>
+            <strong>No more tasks to finish.</strong>
+        </h1>
+        {% endif %}
+    </div>
+
+    <hr/>
+
+    <div class="tasks">
+    {% for task in task_list %}
+        <div class="task" data-id="{{ task.id }}">
+            <div class="finish"></div>
+            <h3>{% task_priority task.priority %}Task <strong>#{{ forloop.counter }}</strong></h3>
+            <h4 class="content" contenteditable="true">{{ task.content }}</h4>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% if task_list.count == 0 %}
+        <h3>No more tasks left</h3>
+    {% endif %}
+{% endblock %}

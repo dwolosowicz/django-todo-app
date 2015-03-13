@@ -1,0 +1,66 @@
+.task {
+    position: relative;
+}
+
+.task .finish {
+    position: absolute;
+    right: 5px;
+    top: 0px;
+
+    opacity: 0;
+    cursor: pointer;
+
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out;
+    -ms-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.task .finish:before {
+    content: "\2714";
+    line-height: 50%;
+    font-size: 72px;
+    color: #EEE;
+
+    -webkit-transition: color 300ms linear;
+    -moz-transition: color 300ms linear;
+    -o-transition: color 300ms linear;
+    -ms-transition: color 300ms linear;
+    transition: color 300ms linear;
+}
+
+.task .finish:hover:before {
+    color: #DDD;
+}
+
+.task:hover .finish {
+    opacity: 1;
+}
+
+i.task-priority {
+    cursor: pointer;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    border-radius: 100%;
+
+    -webkit-transition: background-color 300ms linear;
+    -moz-transition: background-color 300ms linear;
+    -o-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
+}
+
+i.task-priority.task-priority-high {
+    background: #FF3737;
+}
+
+i.task-priority.task-priority-normal {
+    background: #FFB219;
+}
+
+i.task-priority.task-priority-low {
+    background: #219999;
+}
