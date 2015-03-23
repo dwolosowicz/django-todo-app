@@ -3,6 +3,7 @@ from django.utils import timezone
 
 
 class RequestLoggingMiddleware():
+
     def process_response(self, request, response):
         RequestLog.objects.create_from_response(request, response)
 
@@ -13,7 +14,9 @@ class RequestLoggingMiddleware():
 
 
 class TimezoneMiddleware():
-    def process_request(self, request):
-        tz = request.user.user_profile.timezone
 
-        timezone.activate(tz);
+    def process_request(self, request):
+        if request.user.is_authenticated():
+            tz = request.user.user_profile.timezone
+
+            timezone.activate(tz)

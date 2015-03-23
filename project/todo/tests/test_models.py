@@ -4,15 +4,7 @@ from django.test import TestCase, RequestFactory
 from todo.models import UserProfile, Task
 from todo.models.request_log import RequestLogManager, RequestLog
 
-
-class Utils:
-    @classmethod
-    def create_task(cls, user, content, priority=Task.NORMAL):
-        return Task.objects.create(user=user, content=content, priority=priority)
-
-    @classmethod
-    def create_test_user(cls):
-        return User.objects.create_user('test_user', 'test_email@email.com', 'test_pass')
+from .utils import Utils
 
 
 class FakeError(Exception):

@@ -17,7 +17,9 @@ class IndexView(generic.ListView):
     queryset = 'task_list'
 
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user, is_completed=False).order_by('-created')
+        return Task.objects.filter(
+            user=self.request.user,
+            is_completed=False).order_by('-created')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -58,13 +60,14 @@ def task(request):
         form = TaskForm(request.POST, instance=Task())
 
         if form.is_valid():
-            task = form.save(False);
+            task = form.save(False)
             task.user = request.user
             task.save()
 
             return redirect(reverse('index'))
 
-    return render(request, template, { 'form': form })
+    return render(request, template, {'form': form})
+
 
 def __task_update_field(form):
     if form.is_valid():
