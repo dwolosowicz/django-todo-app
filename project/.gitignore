@@ -1,3 +1,5 @@
 __pycache__
 static/*
 !static/.gitkeep
+*.pyc
+*.tags

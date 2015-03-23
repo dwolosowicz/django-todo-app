@@ -25,7 +25,7 @@ class RequestLogAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('content', 'priority', 'created', 'modified', 'user')
+    list_display = ('is_completed', 'content', 'priority', 'created', 'modified', 'user')
     search_fields = ('content',)
     ordering = ('created', 'modified')
 

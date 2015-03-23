@@ -41,7 +41,7 @@ $(function() {
     $('.tasks').on('click', '.finish', function() {
         var task_id = $(this).parents('.task').attr('data-id');
 
-        $(document).trigger('todo.set-finished', [ task_id ]);
+        $(document).trigger('todo.set-completed', [ task_id ]);
     });
 
     $('.tasks').on('focusout', '.content', function() {
@@ -51,11 +51,11 @@ $(function() {
     });
 
     $(document).on('todo.set-priority', function(e, task_id, level) {
-        $.post('/ajax/task', { id: task_id, priority: level });
+        $.post('/task/priority', { id: task_id, priority: level });
     });
 
-    $(document).on('todo.set-finished', function(e, task_id) {
-        var promise = $.post('/ajax/task', { id: task_id, finished: true });
+    $(document).on('todo.set-completed', function(e, task_id) {
+        var promise = $.post('/task/completed', { id: task_id, is_completed: true });
 
         promise.then(function() {
             $.get(window.location.toString(), {}, function(html) {
@@ -68,7 +68,7 @@ $(function() {
     });
 
     $(document).on('todo.set-content', function(e, task_id, content) {
-        $.post('/ajax/task', { id: task_id, content: content });
+        $.post('/task/content', { id: task_id, content: content });
     });
 
 });

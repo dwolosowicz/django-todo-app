@@ -17,14 +17,12 @@ class Task(models.Model):
         (HIGH, 'High'),
     )
 
-    user = models.ForeignKey(User)
-    content = models.TextField(default='')
-    priority = models.CharField(max_length=1, choices=PRIORITIES)
-    finished = models.BooleanField(default=False)
+    user = models.ForeignKey(User, verbose_name="Author")
+    content = models.TextField(default='', verbose_name="Task")
+    priority = models.CharField(max_length=1, choices=PRIORITIES, verbose_name="Importance")
+    is_completed = models.BooleanField(default=False, verbose_name="Finished?")
     created = fields.CreationDateTimeField()
     modified = fields.ModificationDateTimeField()
-
-    content.short_description = 'Name'
 
     def __str__(self):
         return self.content
