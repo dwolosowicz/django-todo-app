@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
+{% load tz %}
 {% load task_priority %}
 
 {% block content %}
     <div class="task-count">
         {% if task_count > 0 %}
         <h1>
-            <strong>{{ task_count }}</strong> todo{{ task_count|pluralize }} <strong>remain unfinished</strong>
+            {% if task_count == 1 %}
+                <strong>{{ task_count }}</strong> todo remains <strong>unfinished</strong>
+            {% else %}
+                <strong>{{ task_count }}</strong> todos remain <strong>unfinished</strong>
+            {% endif %}
+
+            <a href="{% url 'task_new' %}">Let's add another!</a>
         </h1>
         {% else %}
         <h1>
             <strong>No more tasks to finish.</strong>
+            <a href="{% url 'task_new' %}">Be first! Create one.</a>
         </h1>
         {% endif %}
     </div>
@@ -21,6 +29,7 @@
         <div class="task" data-id="{{ task.id }}">
             <div class="finish"></div>
             <h3>{% task_priority task.priority %}Task <strong>#{{ forloop.counter }}</strong></h3>
+            <em>Created {{ task.created|localtime }} Modified {{ task.modified|localtime }}</em>
             <h4 class="content" contenteditable="true">{{ task.content }}</h4>
         </div>
     {% endfor %}

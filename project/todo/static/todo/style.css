@@ -20,8 +20,8 @@
 .task .finish:before {
     content: "\2714";
     line-height: 50%;
-    font-size: 72px;
-    color: #EEE;
+    font-size: 32px;
+    color: #CCC;
 
     -webkit-transition: color 300ms linear;
     -moz-transition: color 300ms linear;
@@ -31,7 +31,7 @@
 }
 
 .task .finish:hover:before {
-    color: #DDD;
+    color: #AAA;
 }
 
 .task:hover .finish {

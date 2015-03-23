@@ -2,11 +2,12 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from timezone_field import TimeZoneField
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(to=User, related_name='user_profile')
-    timezone = models.CharField(max_length=128, null=None).null
+    timezone = TimeZoneField(default="Europe/Warsaw")
     added_tasks_count = models.IntegerField(default=0)
 
     def increment_tasks_count(self):

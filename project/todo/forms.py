@@ -1,14 +1,31 @@
 from django import forms
-from .models import Task
+from .models import Task, UserProfile
+from django.contrib.auth.models import User
+from timezone_field import TimeZoneFormField
 
-class TaskForm(forms.Form):
-    pass
 
-class TaskContentForm(forms.Form):
-    content = forms.CharField(required=True, min_length=20)
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
 
-class TaskPriorityForm(forms.Form):
-    priority = forms.ChoiceField(choices=Task.PRIORITIES)
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'email', 'first_name', 'last_name']
 
-class TaskCompletedForm(forms.Form):
-    is_completed = forms.BooleanField()
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['timezone']
+
+
+class TaskContentForm(forms.ModelForm):
+    content = forms.CharField(min_length=20)
+
+    class Meta:
+        model = Task
+        fields = ['content']
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['content', 'priority']

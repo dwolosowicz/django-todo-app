@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<div class="col-lg-4 col-lg-offset-4 col-sm-8 col-sm-offset-2">
+    <h1>Create new account</h1>
+
+    <hr/>
+
+     <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% bootstrap_form profile_form %}
+
+        {% buttons %}
+        <input type="submit" value="Register" class="btn btn-lg btn-block btn-primary pull-right"/>
+        {% endbuttons %}
+    </form>
+</div>
+
+{% endblock %}
