@@ -7,7 +7,7 @@
 # - the code repository has been successfully cloned into specific directory from which this script will run
 #
 
-COLOR_WHITE="\037[0;32m"
+COLOR_WHITE="\033[0;37m"
 COLOR_NONE="\033[0;0m"
 
 ADMIN_USERNAME="admin"
