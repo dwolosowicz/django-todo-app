@@ -105,3 +105,5 @@ GRAPPELLI_ADMIN_TITLE = "Todo App"
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
+
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'

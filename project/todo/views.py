@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.forms.models import modelform_factory
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.core import mail
 
 from .models import Task, UserProfile
 from django.contrib.auth.models import User
@@ -46,6 +47,14 @@ def register(request):
             user_profile = user.user_profile
             user_profile.timezone = profile_form.cleaned_data['timezone']
             user_profile.save()
+
+            mail.send_mail(
+                    "Good job with creating your account on PersonalTodos!",
+                    "You've successfully created an account on PersonalTodos. Don't wait, create your todo list right away!",
+                    "account@personaltodos.com",
+                    [ user.email ],
+                    fail_silently=True
+                    )
 
             return redirect(reverse('login'))
 

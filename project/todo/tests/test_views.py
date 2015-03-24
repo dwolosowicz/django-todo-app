@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from urlparse import urlparse
+from django.core import mail
+from django.contrib.auth.models import User
 
 from .utils import Utils
 from todo.models import RequestLog
@@ -99,7 +101,7 @@ class RequestLogTest(TestCase):
        self.assertEqual(login_request_log.status_code, response.status_code)
 
 
-class LoginTest(AuthAsserts, HttpAsserts, TestCase):
+class AuthTest(AuthAsserts, HttpAsserts, TestCase):
 
     def test_user_can_login(self):
         user = Utils.create_test_user(
@@ -112,3 +114,19 @@ class LoginTest(AuthAsserts, HttpAsserts, TestCase):
 
         self.assertRedirect302(response)
         self.assertLoggedIn(c, user)
+
+    def test_user_can_register_and_mail_is_sent(self):
+        c = Client()
+
+        response = c.post(reverse('register'), {
+                'username': 'Test',
+                'password': 'test_pass',
+                'first_name': 'John',
+                'last_name': 'Doe',
+                'email': 'test@example.com',
+                'timezone': 'Europe/Warsaw'
+            })
+
+        self.assertRedirect302(response)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIsNotNone(User.objects.get(pk=1))
