@@ -7,5 +7,6 @@ urlpatterns = patterns('',
     url(r'^task$', views.task, name="task_new"),
     url(r'^task/content$', views.task_content, name="task_content"),
     url(r'^task/priority$', views.task_priority, name="task_priority"),
-    url(r'^task/completed$', views.task_completed, name="task_completed")
+    url(r'^task/completed$', views.task_completed, name="task_completed"),
+    url(r'^task/remove$', views.task_remove, name="task_remove")
 )

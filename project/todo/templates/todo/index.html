@@ -28,9 +28,12 @@
     {% for task in task_list %}
         <div class="task" data-id="{{ task.id }}">
             <div class="finish"></div>
+            <div class="remove"></div>
             <h3>{% task_priority task.priority %}Task <strong>#{{ forloop.counter }}</strong></h3>
-            <em>Created {{ task.created|localtime }} Modified {{ task.modified|localtime }}</em>
-            <h4 class="content" contenteditable="true">{{ task.content }}</h4>
+            <div class="task-body">
+                <em>Created {{ task.created|localtime }} Modified {{ task.modified|localtime }}</em>
+                <h4 class="content" contenteditable="true">{{ task.content }}</h4>
+            </div>
         </div>
     {% endfor %}
 

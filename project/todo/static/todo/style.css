@@ -2,6 +2,21 @@
     position: relative;
 }
 
+.task .remove {
+    position: absolute;
+    right: 50px;
+    top: 0px;
+
+    opacity: 0;
+    cursor: pointer;
+
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out;
+    -ms-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+}
+
 .task .finish {
     position: absolute;
     right: 5px;
@@ -18,7 +33,7 @@
 }
 
 .task .finish:before {
-    content: "\2714";
+    content: "\2713";
     line-height: 50%;
     font-size: 32px;
     color: #CCC;
@@ -30,11 +45,25 @@
     transition: color 300ms linear;
 }
 
-.task .finish:hover:before {
+.task .remove:before {
+    content: "\00d7";
+    font-weight: bold;
+    line-height: 50%;
+    font-size: 32px;
+    color: #CCC;
+
+    -webkit-transition: color 300ms linear;
+    -moz-transition: color 300ms linear;
+    -o-transition: color 300ms linear;
+    -ms-transition: color 300ms linear;
+    transition: color 300ms linear;
+}
+
+.task .finish:hover:before, .task .remove:hover:before {
     color: #AAA;
 }
 
-.task:hover .finish {
+.task:hover .finish, .task:hover .remove {
     opacity: 1;
 }
 

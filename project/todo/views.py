@@ -12,6 +12,10 @@ from django.contrib.auth.models import User
 from .forms import UserProfileForm, UserForm, TaskForm, TaskContentForm
 
 
+def get_user_object_or_404(entity, user, **kwargs):
+    return get_object_or_404(entity.objects.filter(user=user), **kwargs)
+
+
 class IndexView(generic.ListView):
     template_name = "todo/index.html"
     queryset = 'task_list'
@@ -69,7 +73,7 @@ def task(request):
     return render(request, template, {'form': form})
 
 
-def __task_update_field(form):
+def __task_update_field(form, user):
     if form.is_valid():
         form.save()
 
@@ -80,22 +84,29 @@ def __task_update_field(form):
 
 @login_required
 def task_content(request):
-    task = get_object_or_404(Task, pk=request.POST['id'])
+    task = get_user_object_or_404(Task, request.user, pk=request.POST['id'])
 
-    return __task_update_field(TaskContentForm(request.POST, instance=task))
+    return __task_update_field(TaskContentForm(request.POST, instance=task), request.user)
 
 
 @login_required
 def task_priority(request):
-    task = get_object_or_404(Task, pk=request.POST['id'])
+    task = get_user_object_or_404(Task, request.user, pk=request.POST['id'])
     Form = modelform_factory(Task, fields=['priority'])
 
-    return __task_update_field(Form(request.POST, instance=task))
+    return __task_update_field(Form(request.POST, instance=task), request.user)
 
 
 @login_required
 def task_completed(request):
-    task = get_object_or_404(Task, pk=request.POST['id'])
+    task = get_user_object_or_404(Task, request.user, pk=request.POST['id'])
     Form = modelform_factory(Task, fields=['is_completed'])
 
-    return __task_update_field(Form(request.POST, instance=task))
+    return __task_update_field(Form(request.POST, instance=task), request.user)
+
+@login_required
+def task_remove(request):
+    task = get_user_object_or_404(Task, request.user, pk=request.POST['id'])
+    task.delete()
+
+    return HttpResponse()

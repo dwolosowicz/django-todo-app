@@ -6,7 +6,48 @@ from .utils import Utils
 from todo.models import RequestLog
 
 
-class TaskTest(TestCase):
+class AuthAsserts(TestCase):
+
+    def assertLoggedIn(self, client, user):
+        self.assertEqual(client.session['_auth_user_id'], user.pk)
+
+
+class HttpAsserts(TestCase):
+
+    def assertSuccess(self, response):
+        self.assertEqual(200, response.status_code)
+
+    def assertRedirect301(self, response):
+        self.assertEqual(301, response.status_code)
+
+    def assertRedirect302(self, response):
+        self.assertEqual(302, response.status_code)
+
+    def assertBadRequest(self, response):
+        self.assertEqual(400, response.status_code)
+
+    def assertNotFound(self, response):
+        self.assertEqual(404, response.status_code)
+
+
+class TaskTest(HttpAsserts, TestCase):
+
+    class TestUser:
+        def __init__(self):
+            self.instance = Utils.create_test_user(username=self.username, password=self.password, email=self.email);
+
+
+    class TestUserOne(TestUser):
+        username = 'user_a'
+        password = 'password_user_a'
+        email = 'user_a@user.com'
+
+
+    class TestUserTwo(TestUser):
+        username = 'user_b'
+        password = 'password_user_b'
+        email = 'user_b@user.com'
+
 
     def test_annonymous_create_task(self):
         """
@@ -18,7 +59,7 @@ class TaskTest(TestCase):
 
         url_components = urlparse(response.url)
 
-        self.assertEquals(302, response.status_code)
+        self.assertRedirect302(response)
         self.assertEquals(reverse('login')[:-1], url_components.path)
 
     def test_task_cross_modification(self):
@@ -28,28 +69,19 @@ class TaskTest(TestCase):
 
         c = Client()
 
-        user_b_username = 'user_b'
-        user_b_password = 'test_pass'
+        user_a = self.TestUserOne()
+        user_b = self.TestUserTwo()
 
-        user_a = Utils.create_test_user(
-            'user_a',
-            'user_a@example.com',
-            'test_pass')
-        user_b = Utils.create_test_user(
-            user_b_username,
-            'user_b@example.com',
-            user_b_password)
+        user_a_task = Utils.create_task(user_a.instance, "My custom content")
 
-        user_a_task = Utils.create_task(user_a, "My custom content")
-
-        login_status = c.login(username=user_b_username, password=user_b_password)
+        login_status = c.login(username=user_b.username, password=user_b.password)
 
         response = c.post(
             reverse('task_content'), {
                 'content': 'Changed content', 'id': user_a_task.id})
 
         self.assertTrue(login_status)
-        self.assertEquals(400, response.status_code)
+        self.assertNotFound(response)
 
 
 class RequestLogTest(TestCase):
@@ -67,7 +99,7 @@ class RequestLogTest(TestCase):
        self.assertEqual(login_request_log.status_code, response.status_code)
 
 
-class LoginTest(TestCase):
+class LoginTest(AuthAsserts, HttpAsserts, TestCase):
 
     def test_user_can_login(self):
         user = Utils.create_test_user(
@@ -78,5 +110,5 @@ class LoginTest(TestCase):
         c = Client()
         response = c.post(reverse('login'), { 'username': 'user', 'password': 'test_pass' })
 
-        self.assertEquals(302, response.status_code) # Check whether the client passed through the form
-        self.assertEqual(c.session['_auth_user_id'], user.pk) # Determine if is truly logged in
+        self.assertRedirect302(response)
+        self.assertLoggedIn(c, user)

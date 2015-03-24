@@ -19,13 +19,15 @@ class UserProfileForm(forms.ModelForm):
 
 
 class TaskContentForm(forms.ModelForm):
-    content = forms.CharField(min_length=20)
+    content = forms.CharField(min_length=20, required=True)
 
     class Meta:
         model = Task
         fields = ['content']
 
 class TaskForm(forms.ModelForm):
+    content = forms.CharField(min_length=20, required=True, widget=forms.Textarea)
+
     class Meta:
         model = Task
         fields = ['content', 'priority']
