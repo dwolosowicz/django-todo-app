@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/bash
 
 #
 # The installation script assumes a few things:
@@ -9,5 +9,6 @@
 
 virtualenv env
 source env/bin/activate
-python pip -r requirements.txt
+pip install -r requirements.txt
 python project/manage.py migrate
+python project/manage.py collectstatic --noinput
