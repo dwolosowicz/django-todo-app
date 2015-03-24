@@ -8,7 +8,7 @@
 #
 
 COLOR="\033[1;34m"
-COLOR_NONE="\033[0;0m"
+COLOR_NONE="\033[0m"
 
 ADMIN_USERNAME="admin"
 ADMIN_EMAIL="admin@example.com"
